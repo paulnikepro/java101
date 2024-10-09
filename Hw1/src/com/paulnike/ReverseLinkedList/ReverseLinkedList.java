@@ -1,3 +1,5 @@
+package com.paulnike.ReverseLinkedList;
+
 class Solution {
     public ListNode reverseList(ListNode head) {
         ListNode previousNode = null;
