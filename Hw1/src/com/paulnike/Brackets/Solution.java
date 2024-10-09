@@ -14,9 +14,7 @@ public class Solution {
 
         for (char currentChar : s.toCharArray()) {
             if (matchingBrackets.containsKey(currentChar)) {
-                char topBracket = bracketStack.isEmpty() ? '#' : bracketStack.pop();
-
-                if (topBracket != matchingBrackets.get(currentChar)) {
+                if (bracketStack.isEmpty() || bracketStack.pop() != matchingBrackets.get(currentChar)) {
                     return false;
                 }
             } else {
@@ -35,5 +33,7 @@ public class Solution {
         System.out.println(solution.isValid("(]"));       // false
         System.out.println(solution.isValid("([])"));     // true
         System.out.println(solution.isValid("([)]"));     // false
+        System.out.println(solution.isValid("(false)"));       // false
+        System.out.println(solution.isValid("()[test]{}"));   // false
     }
 }
