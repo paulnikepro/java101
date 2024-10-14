@@ -40,7 +40,7 @@ public class StudentGradesProcessor {
                 .filter(student -> student.age > 15 && "New York".equals(student.address.city))
                 .flatMap(student -> student.grades.stream()
                         .map(grade -> new StudentGradeRecord(student.name, student.school, grade.subject, grade.score)))
-                .sorted(Comparator.comparingDouble(StudentGradeRecord::getScore).reversed())
+                .sorted(Comparator.comparingDouble(StudentGradeRecord::score).reversed())
                 .limit(3)
                 .toList();
 
