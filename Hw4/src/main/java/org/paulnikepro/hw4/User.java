@@ -1,17 +1,11 @@
 package org.paulnikepro.hw4;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.Set;
 
-@Setter
-@Getter
 @Entity
 @Table(name = "users")
 public class User {
-    // Getters and Setters
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,10 +20,8 @@ public class User {
     )
     private Set<Role> roles;
 
-    // Default constructor
     public User() { }
 
-    // Constructor with parameters
     public User(Long id, String name, String email, Set<Role> roles) {
         this.id = id;
         this.name = name;
@@ -37,4 +29,35 @@ public class User {
         this.roles = roles;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
 }
