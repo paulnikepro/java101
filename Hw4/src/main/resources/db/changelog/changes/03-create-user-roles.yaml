@@ -1,15 +1,6 @@
 databaseChangeLog:
-#  - changeSet:
-#      id: 1
-#      author: developer
-#      changes:
-#        - dropTable:
-#            tableName: user_roles
-#      preConditions:
-#        - tableExists:
-#            tableName: user_roles
   - changeSet:
-      id: 2
+      id: 1
       author: developer
       changes:
         - createTable:
