@@ -1,24 +1,27 @@
 package org.paulnikepro.hw4;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Table;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-
-@Table(name = "roles")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Setter
+@Getter
 @Entity
+@Table(name = "roles")
 public class Role {
+    // Getters and Setters
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
+
+    // Default constructor
+    public Role() { }
+
+    // Constructor with parameters
+    public Role(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
 }
