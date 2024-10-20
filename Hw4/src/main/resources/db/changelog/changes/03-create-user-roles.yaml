@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: developer
+      changes:
+        - createTable:
+            tableName: user_roles
+            columns:
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+            # Adding foreign key constraints directly in the create table statement
+            foreignKeys:
+              - foreignKey:
+                  name: fk_user_roles_user
+                  referencedTableName: users
+                  referencedColumnNames: id
+                  baseColumnNames: user_id
+              - foreignKey:
+                  name: fk_user_roles_role
+                  referencedTableName: roles
+                  referencedColumnNames: id
+                  baseColumnNames: role_id
