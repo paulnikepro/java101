@@ -1,6 +1,7 @@
 package org.paulnikepro.hw3.validation;
 
 import org.paulnikepro.hw3.dto.UserRegistrationDto;
+import org.paulnikepro.hw3.exception.UserServiceException;
 
 import java.util.regex.Pattern;
 
@@ -11,15 +12,15 @@ public class UserValidator {
 
     public void validate(UserRegistrationDto dto) {
         if (!Pattern.matches(EMAIL_REGEX, dto.getEmail())) {
-            throw new IllegalArgumentException("Invalid email format.");
+            throw new UserServiceException("INVALID_EMAIL", "Invalid email format.");
         }
 
         if (dto.getPhoneNumber() != null && !Pattern.matches(PHONE_REGEX, dto.getPhoneNumber())) {
-            throw new IllegalArgumentException("Invalid phone number.");
+            throw new UserServiceException("INVALID_PHONE_NUMBER", "Invalid phone number.");
         }
 
         if (!dto.getPassword().equals(dto.getRepeatPassword())) {
-            throw new IllegalArgumentException("Passwords do not match.");
+            throw new UserServiceException("PASSWORD_MISMATCH", "Passwords do not match.");
         }
     }
 }

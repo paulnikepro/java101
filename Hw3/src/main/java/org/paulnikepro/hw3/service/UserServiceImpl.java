@@ -3,6 +3,7 @@ package org.paulnikepro.hw3.service;
 import org.paulnikepro.hw3.dto.UserRegistrationDto;
 import org.paulnikepro.hw3.dto.UserResponseDto;
 import org.paulnikepro.hw3.entity.User;
+import org.paulnikepro.hw3.exception.UserServiceException;
 import org.paulnikepro.hw3.repository.UserRepository;
 import org.paulnikepro.hw3.validation.UserValidator;
 
@@ -27,10 +28,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDto getUserById(Long userId) {
-        User user = userRepository.findById(userId);
-        if (user == null) {
-            throw new IllegalArgumentException("User not found.");
-        }
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserServiceException("USER_NOT_FOUND", "User not found with ID: " + userId));
 
         return new UserResponseDto(user.getId(), user.getEmail(), user.getPhoneNumber());
     }

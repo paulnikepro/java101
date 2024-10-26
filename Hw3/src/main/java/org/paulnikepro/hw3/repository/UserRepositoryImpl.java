@@ -2,11 +2,19 @@ package org.paulnikepro.hw3.repository;
 
 import org.paulnikepro.hw3.entity.User;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Optional;
 
 public class UserRepositoryImpl implements UserRepository {
     private static final String URL = "jdbc:sqlite:users.db.sqlite";
-    //private static final String URL = "jdbc:sqlite:C:\\Learning\\Java101\\java101\\Hw3\\users.db.sqlite";
+    private static final int EMAIL_INDEX = 1;
+    private static final int PHONE_NUMBER_INDEX = 2;
+    private static final int PASSWORD_INDEX = 3;
 
     // Constructor: Initializes the database table if it does not exist.
     public UserRepositoryImpl() {
@@ -38,9 +46,9 @@ public class UserRepositoryImpl implements UserRepository {
         try (Connection conn = DriverManager.getConnection(URL);
              PreparedStatement pstmt = conn.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
 
-            pstmt.setString(1, user.getEmail());
-            pstmt.setString(2, user.getPhoneNumber());
-            pstmt.setString(3, user.getPassword());
+            pstmt.setString(EMAIL_INDEX, user.getEmail());
+            pstmt.setString(PHONE_NUMBER_INDEX, user.getPhoneNumber());
+            pstmt.setString(PASSWORD_INDEX, user.getPassword());
 
             pstmt.executeUpdate();
 
@@ -51,7 +59,6 @@ public class UserRepositoryImpl implements UserRepository {
             }
 
         } catch (SQLException e) {
-            // Consider logging instead of printing
             e.printStackTrace();
         }
 
@@ -60,7 +67,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     // Finds a user by ID from the database.
     @Override
-    public User findById(Long id) {
+    public Optional<User> findById(Long id) {
         String query = "SELECT * FROM users WHERE id = ?";
 
         try (Connection conn = DriverManager.getConnection(URL);
@@ -70,23 +77,19 @@ public class UserRepositoryImpl implements UserRepository {
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-                    return new User(
+                    return Optional.of(new User(
                             rs.getLong("id"),
                             rs.getString("email"),
                             rs.getString("phoneNumber"),
                             rs.getString("password")
-                    );
+                    ));
                 }
             }
 
         } catch (SQLException e) {
-            // Consider logging instead of printing
             e.printStackTrace();
         }
 
-        return null;
+        return Optional.empty();
     }
 }
-
-
-
