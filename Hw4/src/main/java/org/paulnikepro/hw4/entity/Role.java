@@ -1,4 +1,4 @@
-package org.paulnikepro.hw4;
+package org.paulnikepro.hw4.entity;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Entity;

@@ -1,7 +1,7 @@
 databaseChangeLog:
   - changeSet:
       id: 1
-      author: developer
+      author: paulnike
       changes:
         - createTable:
             tableName: users
@@ -22,3 +22,4 @@ databaseChangeLog:
                   type: VARCHAR(100)
                   constraints:
                     nullable: false
+                    unique: true

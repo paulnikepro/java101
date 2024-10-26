@@ -17,7 +17,7 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
 
         <!-- Mappings -->
-        <mapping class="org.paulnikepro.hw4.Role"/>
-        <mapping class="org.paulnikepro.hw4.User"/>
+        <mapping class="org.paulnikepro.hw4.entity.Role"/>
+        <mapping class="org.paulnikepro.hw4.entity.User"/>
     </session-factory>
 </hibernate-configuration>

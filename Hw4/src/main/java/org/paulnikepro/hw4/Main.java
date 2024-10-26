@@ -1,9 +1,11 @@
 package org.paulnikepro.hw4;
 
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.paulnikepro.hw4.entity.Role;
+import org.paulnikepro.hw4.entity.User;
+import org.paulnikepro.hw4.repository.RoleRepository;
+import org.paulnikepro.hw4.repository.UserRepository;
 
 import java.util.HashSet;
 import java.util.List;
@@ -11,18 +13,16 @@ import java.util.Optional;
 
 public class Main {
     public static void main(String[] args) {
+        // Apply database migrations
         LiquibaseSetup.applyMigrations();
 
+        // Configure Hibernate and create SessionFactory
         Configuration cfg = new Configuration().configure();
+        try (SessionFactory sessionFactory = cfg.buildSessionFactory()) {
 
-        // Try-with-resources
-        try (SessionFactory sessionFactory = cfg.buildSessionFactory();
-             Session session = sessionFactory.openSession()) {
-
-            Transaction transaction = session.beginTransaction();
-
-            RoleRepository roleRepository = new RoleRepository(session);
-            UserRepository userRepository = new UserRepository(session);
+            // Initialize repositories with SessionFactory
+            RoleRepository roleRepository = new RoleRepository(sessionFactory);
+            UserRepository userRepository = new UserRepository(sessionFactory);
 
             // Create roles
             Role adminRole = new Role(null, "Admin");
@@ -30,27 +30,21 @@ public class Main {
             roleRepository.create(adminRole);
             roleRepository.create(userRole);
 
-            // Create a user
+            // Create a user and assign roles
             User user = new User(null, "John Doe", "john.doe@example.com", new HashSet<>());
             user.getRoles().addAll(List.of(adminRole, userRole));
             userRepository.create(user);
 
-            transaction.commit();
-
-            // Start a new transaction for updating user info
-            Transaction updateTransaction = session.beginTransaction();
-
+            // Retrieve and update user information
             Optional<User> retrievedUserOpt = userRepository.findById(user.getId());
             if (retrievedUserOpt.isPresent()) {
                 User retrievedUser = retrievedUserOpt.get();
                 System.out.println("Before Update: " + retrievedUser.getName() + ", Email: " + retrievedUser.getEmail());
 
-                // Update user information
+                // Update user details
                 retrievedUser.setName("Jane Doe");
                 retrievedUser.setEmail("jane.doe@example.com");
                 userRepository.update(retrievedUser);
-
-                updateTransaction.commit();
 
                 // Verify updates
                 Optional<User> updatedUserOpt = userRepository.findById(retrievedUser.getId());
@@ -62,7 +56,7 @@ public class Main {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(); // better replace with  SLF4J Logger
         }
     }
 }
